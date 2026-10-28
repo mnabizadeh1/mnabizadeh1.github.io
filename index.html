@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matin Nabizadeh</title>
+<meta name="description" content="Matin Nabizadeh, electrical engineering student at the University of Calgary. Power electronics, embedded systems and hardware design projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+/* Layout: engineering drawing sheet. Title block hero, then one case-study "sheet" per project with a spec table beside the narrative. */
+:root {
+  --paper: #eef1f3;
+  --sheet: #f8fafb;
+  --ink: #14212e;
+  --ink-2: #4a5866;
+  --rule: #c9d1d8;
+  --copper: #a8551f;
+  --copper-soft: #f3e3d6;
+  --mask: #1f5b4a;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f161d; --sheet: #151e27; --ink: #e3e9ee; --ink-2: #9aa8b5;
+    --rule: #2a3742; --copper: #e08a4f; --copper-soft: #3a2618; --mask: #6fc3a4;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f161d; --sheet: #151e27; --ink: #e3e9ee; --ink-2: #9aa8b5;
+  --rule: #2a3742; --copper: #e08a4f; --copper-soft: #3a2618; --mask: #6fc3a4;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--body); font-size: 16.5px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: inherit; text-decoration-color: var(--copper); text-underline-offset: 3px; }
+a:hover { color: var(--copper); }
+:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 2px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+p { margin: 0; }
+.label {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-2);
+}
+
+/* Top bar */
+.top { border-bottom: 1px solid var(--rule); }
+.top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 14px; flex-wrap: wrap; }
+.mark { font-family: var(--mono); font-size: 13px; font-weight: 500; text-decoration: none; }
+.top nav { display: flex; gap: 22px; flex-wrap: wrap; }
+.top nav a { font-size: 14px; text-decoration: none; color: var(--ink-2); }
+.top nav a:hover { color: var(--copper); }
+
+/* Hero */
+.hero { border-bottom: 1px solid var(--rule); }
+.hero .wrap { padding-block: 64px 48px; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 48px; align-items: end; }
+.hero h1 {
+  font-size: clamp(44px, 7.5vw, 92px); line-height: 0.92; font-weight: 800;
+  font-stretch: 78%; text-transform: uppercase;
+}
+.hero h1 span { display: block; color: var(--copper); }
+.hero .lede { margin-top: 24px; max-width: 34em; font-size: 18px; color: var(--ink-2); }
+.hero .lede strong { color: var(--ink); font-weight: 600; }
+.links { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; font: 500 14px var(--body);
+  padding: 9px 14px; border: 1px solid var(--ink); border-radius: 3px; background: transparent;
+  color: var(--ink); text-decoration: none; cursor: pointer;
+}
+.btn.primary { background: var(--ink); color: var(--sheet); }
+.btn:hover { border-color: var(--copper); color: var(--copper); }
+.btn.primary:hover { background: var(--copper); color: var(--sheet); }
+
+/* Title block, like the corner of a drawing sheet */
+.tblock { border: 1.5px solid var(--ink); background: var(--sheet); font-size: 14px; }
+.tblock div { display: grid; grid-template-columns: 112px minmax(0, 1fr); border-top: 1px solid var(--rule); }
+.tblock div:first-child { border-top: 0; }
+.tblock dt, .tblock dd { margin: 0; padding: 9px 12px; }
+.tblock dt { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); border-right: 1px solid var(--rule); padding-top: 11px; }
+.tblock dd { font-weight: 500; }
+
+/* Headline figures */
+.figs { border-block: 1px solid var(--rule); background: var(--sheet); }
+.figs .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.fig { padding-block: 22px; padding-right: 16px; border-left: 1px solid var(--rule); padding-left: 20px; }
+.fig:first-child { border-left: 0; padding-left: 0; }
+.fig b { display: block; font-family: var(--display); font-stretch: 85%; font-size: 34px; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.fig b small { font-size: 0.55em; font-weight: 600; color: var(--copper); margin-left: 2px; }
+.fig span { display: block; margin-top: 4px; font-size: 13.5px; color: var(--ink-2); line-height: 1.4; }
+
+/* Section heads */
+.section { padding-block: 56px 24px; }
+.sec-head { display: flex; align-items: baseline; gap: 16px; padding-bottom: 14px; border-bottom: 1.5px solid var(--ink); margin-bottom: 8px; }
+.sec-head h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 750; font-stretch: 85%; }
+
+/* Project sheets */
+.project { padding-block: 48px; border-bottom: 1px solid var(--rule); }
+.project:last-child { border-bottom: 0; }
+.p-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; align-items: baseline; }
+.p-head h3 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 750; font-stretch: 88%; }
+.p-meta { font-family: var(--mono); font-size: 13px; color: var(--ink-2); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.tag { font-family: var(--mono); font-size: 11.5px; padding: 3px 8px; border: 1px solid var(--rule); border-radius: 2px; color: var(--ink-2); background: var(--sheet); }
+
+.p-body { margin-top: 28px; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.prose { display: grid; gap: 22px; max-width: 64ch; }
+.prose h4 { margin: 0 0 6px; font: 600 13px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mask); }
+.prose ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.prose li::marker { color: var(--copper); }
+
+.spec { background: var(--sheet); border: 1px solid var(--rule); }
+.spec .label { padding: 10px 14px; border-bottom: 1px solid var(--rule); display: block; }
+.spec dl { margin: 0; }
+.spec dl div { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 12px; padding: 10px 14px; border-top: 1px solid var(--rule); font-size: 14px; }
+.spec dl div:first-child { border-top: 0; }
+.spec dt { color: var(--ink-2); }
+.spec dd { margin: 0; font-family: var(--mono); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+
+.gallery { margin-top: 32px; display: grid; gap: 12px; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); }
+.gallery button { all: unset; cursor: zoom-in; display: block; }
+.gallery button:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
+.gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; border: 1px solid var(--rule); background: var(--sheet); }
+.gallery figcaption { margin-top: 6px; font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
+.gallery figure { margin: 0; }
+
+/* Failure analysis */
+.debug { margin-top: 36px; border: 1.5px solid var(--copper); background: var(--sheet); }
+.debug-head { padding: 14px 20px; background: var(--copper-soft); border-bottom: 1px solid var(--copper); display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; justify-content: space-between; }
+.debug-head h4 { margin: 0; font: 700 21px var(--display); font-stretch: 88%; }
+.debug-head .label { color: var(--copper); }
+.debug-body { padding: 22px 20px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
+.debug-body h5 { margin: 0 0 8px; font: 600 12.5px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; gap: 12px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; font-size: 15px; }
+.steps li::before { content: counter(s); font: 500 12px var(--mono); width: 22px; height: 22px; border: 1px solid var(--copper); color: var(--copper); display: grid; place-items: center; border-radius: 50%; margin-top: 2px; }
+.fix { display: grid; gap: 14px; font-size: 15px; }
+.swap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: 14px; }
+.swap s { color: var(--ink-2); }
+.swap b { color: var(--mask); font-weight: 500; }
+
+/* Experience */
+.roles { display: grid; }
+.role { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; padding-block: 28px; border-bottom: 1px solid var(--rule); }
+.role:last-child { border-bottom: 0; }
+.role .when { font-family: var(--mono); font-size: 13px; color: var(--ink-2); padding-top: 4px; }
+.role h3 { font-size: 23px; font-weight: 700; font-stretch: 90%; }
+.role .org { color: var(--ink-2); margin-top: 2px; }
+.role ul { margin: 14px 0 0; padding-left: 18px; display: grid; gap: 8px; max-width: 70ch; }
+.role li::marker { color: var(--copper); }
+
+/* Skills */
+.skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--rule); background: var(--sheet); margin-top: 20px; }
+.skills > div { padding: 20px; border-left: 1px solid var(--rule); }
+.skills > div:first-child { border-left: 0; }
+.skills h3 { font-size: 18px; font-weight: 700; font-stretch: 90%; margin-bottom: 10px; }
+.skills ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 15px; }
+
+/* Contact */
+.contact { margin-top: 72px; background: var(--ink); color: var(--sheet); }
+.contact .wrap { padding-block: 56px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: end; }
+.contact h2 { font-size: clamp(30px, 4.5vw, 48px); font-weight: 800; font-stretch: 80%; text-transform: uppercase; line-height: 1; }
+.contact p { margin-top: 12px; color: color-mix(in srgb, var(--sheet) 75%, var(--ink)); max-width: 40ch; }
+.c-rows { display: grid; gap: 10px; }
+.c-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border: 1px solid color-mix(in srgb, var(--sheet) 25%, var(--ink)); border-radius: 3px; flex-wrap: wrap; }
+.c-row .label { color: color-mix(in srgb, var(--sheet) 60%, var(--ink)); }
+.c-row .val { font-family: var(--mono); font-size: 15px; user-select: all; overflow-wrap: anywhere; }
+.c-row a { color: var(--sheet); }
+.c-row button { font: 500 13px var(--body); padding: 6px 10px; border-radius: 3px; border: 1px solid var(--sheet); background: transparent; color: var(--sheet); cursor: pointer; }
+.c-row button:hover { background: var(--sheet); color: var(--ink); }
+footer { padding-block: 20px; }
+footer .wrap { font-size: 13px; color: var(--ink-2); font-family: var(--mono); }
+
+/* Lightbox */
+dialog { border: 0; padding: 0; background: transparent; max-width: min(1200px, 94vw); }
+dialog::backdrop { background: rgba(8, 12, 16, 0.86); }
+dialog img { display: block; max-width: 100%; max-height: 82vh; width: auto; margin: 0 auto; }
+dialog p { color: #e3e9ee; font-size: 14px; margin-top: 10px; text-align: center; }
+dialog button { position: absolute; top: 8px; right: 8px; font: 500 13px var(--body); background: #14212e; color: #fff; border: 1px solid #fff; padding: 6px 10px; border-radius: 3px; cursor: pointer; }
+
+@media (max-width: 860px) {
+  .hero .wrap, .p-body, .debug-body, .contact .wrap { grid-template-columns: minmax(0, 1fr); }
+  .hero .wrap { padding-block: 40px 32px; gap: 32px; }
+  .gallery { --n: 2 !important; }
+  .role { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .skills { grid-template-columns: minmax(0, 1fr); }
+  .skills > div { border-left: 0; border-top: 1px solid var(--rule); }
+  .skills > div:first-child { border-top: 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .gallery img { transition: filter .2s; }
+  .gallery button:hover img { filter: brightness(1.06) saturate(1.05); }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top">MN / EE</a>
+    <nav aria-label="Sections">
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Matin<span>Nabizadeh</span></h1>
+        <p class="lede">Electrical engineering student at the University of Calgary. I design and build <strong>power electronics, embedded systems and PCBs</strong>, from layout through bring-up, validation under real load, and debugging when the scope shows something unexpected.</p>
+        <div class="links">
+          <a class="btn primary" href="#projects">See projects</a>
+          <a class="btn" href="https://linkedin.com/in/matin-nabizadeh1/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="#contact">Contact</a>
+        </div>
+      </div>
+      <dl class="tblock" aria-label="Summary">
+        <div><dt>Name</dt><dd>Matin Nabizadeh</dd></div>
+        <div><dt>Degree</dt><dd>B.Sc. Electrical Engineering</dd></div>
+        <div><dt>School</dt><dd>University of Calgary</dd></div>
+        <div><dt>Grad</dt><dd>December 2027</dd></div>
+        <div><dt>Focus</dt><dd>Power electronics · Embedded · Hardware design</dd></div>
+        <div><dt>Tools</dt><dd>Altium, LTspice, PLECS, STM32, Python</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <div class="wrap">
+      <div class="sec-head"><h2>Projects</h2><span class="label">3 case studies</span></div>
+
+      <!-- Project: Test bench -->
+      <article class="project">
+        <div class="p-head">
+          <h3>Power Converter Test Bench</h3>
+          <span class="p-meta">Independent project · Nov 2025 – Jan 2026</span>
+        </div>
+        <div class="tags"><span class="tag">STM32</span><span class="tag">Embedded C / HAL</span><span class="tag">Isolated sensing</span><span class="tag">Analog filters</span><span class="tag">Python GUI</span></div>
+        <div class="p-body">
+          <div class="prose">
+            <p>A test bench for evaluating two DC-DC converters ORed together for redundancy. It combines analog front-end design, galvanic isolation, embedded firmware and PC software in one system, so converters can be failed over and measured safely and repeatably.</p>
+            <div>
+              <h4>Analog sensing and isolation</h4>
+              <ul>
+                <li>Input and output voltage/current sensing, each path with its own gain stage and 2nd-order filter.</li>
+                <li>Galvanically isolated sensing amplifiers keep the control side separate from the high-power converter side.</li>
+                <li>Gain stage designed as a configurable differential-to-single-ended amplifier for unipolar or bipolar measurements.</li>
+                <li>Converter enable signals pass through optocoupler-isolated logic so a glitch cannot switch on a converter carrying real power.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Firmware and host software</h4>
+              <ul>
+                <li>STM32F302R8T6 firmware (HAL) reads the ADC via DMA, leaving CPU headroom for USB traffic.</li>
+                <li>USB CDC link to the PC with a custom structured packet format; GPIO enables each converter on host command.</li>
+                <li>Python parser, command-line interface and a real-time monitoring GUI for long test sessions.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Key decisions</h4>
+              <ul>
+                <li>Optocoupler isolation on the enable path was a safety choice, not just a functional one.</li>
+                <li>DMA acquisition instead of polling, anticipating continuous multi-channel throughput.</li>
+                <li>Built both a CLI and a GUI because the bench would be used through many test iterations.</li>
+              </ul>
+            </div>
+          </div>
+          <aside class="spec">
+            <span class="label">Specification</span>
+            <dl>
+              <div><dt>Architecture</dt><dd>2 converters, ORing diodes</dd></div>
+              <div><dt>MCU</dt><dd>STM32F302R8T6</dd></div>
+              <div><dt>Acquisition</dt><dd>ADC + DMA</dd></div>
+              <div><dt>Host link</dt><dd>USB CDC, custom packets</dd></div>
+              <div><dt>Sensing</dt><dd>V<sub>in</sub>, I<sub>in</sub>, V<sub>out</sub>, I<sub>out</sub> (isolated)</dd></div>
+              <div><dt>Filter</dt><dd>2nd-order active</dd></div>
+              <div><dt>Accuracy</dt><dd>~98% across chain</dd></div>
+              <div><dt>Enable path</dt><dd>Optocoupler-isolated</dd></div>
+            </dl>
+          </aside>
+        </div>
+
+        <section class="debug" aria-labelledby="dbg">
+          <div class="debug-head">
+            <h4 id="dbg">Design challenge: op-amp oscillation near 2.5 V</h4>
+            <span class="label">Failure analysis</span>
+          </div>
+          <div class="debug-body">
+            <div>
+              <h5>Symptom</h5>
+              <p style="font-size:15px;margin-bottom:18px">ADC readings were stable at low signal levels but began oscillating as the signal approached about 2.5 V, then settled again once it dropped back. The behaviour was consistent and repeatable, which pointed to a signal-integrity problem rather than random noise.</p>
+              <h5>Diagnosis</h5>
+              <ol class="steps">
+                <li>Probed the gain stage and filter stage separately. The gain stage was stable over the full 0–3.3 V range, which isolated the problem to the filter.</li>
+                <li>Swept the ADC sampling rate. Oscillation started at the same voltage every time, ruling out sample-and-hold charge time.</li>
+                <li>Removed the filter op-amp and fed the sensor straight into the ADC. The oscillation disappeared, confirming the op-amp in its feedback configuration as the cause.</li>
+              </ol>
+            </div>
+            <div class="fix">
+              <h5>Root cause and fix</h5>
+              <p>The original op-amp was not unity-gain stable in the filter's configuration. Swapping it for a unity-gain-stable part fixed the issue completely; readings stayed stable from 0 to 3.3 V.</p>
+              <div class="swap"><s>ADA4891</s> <span aria-hidden="true">→</span> <b>TLV9054</b></div>
+              <h5>Takeaway</h5>
+              <p>Check an op-amp's stability against its actual closed-loop configuration, not just its gain-bandwidth and offset specs. Filter feedback networks can affect stability differently than a simple gain stage.</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="gallery" style="--n:4">
+          <figure><button data-full="img/bench-stack.jpg"><img src="img/bench-stack.jpg" alt="Stacked test bench boards with converter heatsink and power cabling" loading="lazy"></button><figcaption>Assembled bench with converter stack</figcaption></figure>
+          <figure><button data-full="img/bench-mcu.jpg"><img src="img/bench-mcu.jpg" alt="Close-up of STM32 microcontroller and USB-C connector on the control board" loading="lazy"></button><figcaption>STM32 control board and USB link</figcaption></figure>
+          <figure><button data-full="img/bench-top.jpg"><img src="img/bench-top.jpg" alt="Top view of the sensing and control PCB" loading="lazy"></button><figcaption>Sensing and control PCB</figcaption></figure>
+          <figure><button data-full="img/bench-side.jpg"><img src="img/bench-side.jpg" alt="Side view of the stacked boards connected by ribbon cable" loading="lazy"></button><figcaption>Board stack, side view</figcaption></figure>
+        </div>
+      </article>
+
+      <!-- Project: Rectifier -->
+      <article class="project">
+        <div class="p-head">
+          <h3>3.75 kW Active Full-Bridge Rectifier</h3>
+          <span class="p-meta">Power electronics research, University of Calgary · May – Sept 2025</span>
+        </div>
+        <div class="tags"><span class="tag">Altium Designer</span><span class="tag">High-voltage layout</span><span class="tag">Galvanic isolation</span><span class="tag">Test fixture</span></div>
+        <div class="p-body">
+          <div class="prose">
+            <p>PCB design for a 3.75 kW active full-bridge rectifier rated for 400 V, built for undergraduate power electronics research. The board had to switch high voltage safely while protecting operators and downstream circuitry.</p>
+            <div>
+              <h4>Isolation strategy</h4>
+              <p>Isolated voltage and current sensors plus isolated gate drivers separate the high-voltage power stage from the low-voltage control and measurement circuitry.</p>
+            </div>
+            <div>
+              <h4>Test fixture and integration</h4>
+              <p>I also specified and built the test setup: chose screws and ring terminals to match the board's power connections, crimped the terminals, and integrated a 6 kW power supply to source the rectifier under test.</p>
+            </div>
+            <div>
+              <h4>Key decisions</h4>
+              <ul>
+                <li>Creepage and clearance were set at the layout stage, not checked afterward, given the consequences of getting high-voltage spacing wrong.</li>
+                <li>Isolated sensing and gate drive were chosen specifically to protect people and instruments from the 400 V stage.</li>
+              </ul>
+            </div>
+          </div>
+          <aside class="spec">
+            <span class="label">Specification</span>
+            <dl>
+              <div><dt>Power</dt><dd>3.75 kW</dd></div>
+              <div><dt>Rated voltage</dt><dd>400 V</dd></div>
+              <div><dt>Topology</dt><dd>Active full bridge</dd></div>
+              <div><dt>Validated at</dt><dd>250 V<sub>RMS</sub>, 4.5 A<sub>RMS</sub></dd></div>
+              <div><dt>Isolation</dt><dd>Isolated sensors + gate drivers</dd></div>
+              <div><dt>Source</dt><dd>6 kW supply</dd></div>
+            </dl>
+          </aside>
+        </div>
+        <div class="gallery" style="--n:4">
+          <figure><button data-full="img/rect-scope.jpg"><img src="img/rect-scope.jpg" alt="Oscilloscope showing rectifier switching and current waveforms" loading="lazy"></button><figcaption>Waveforms under load</figcaption></figure>
+          <figure><button data-full="img/rect-board.jpg"><img src="img/rect-board.jpg" alt="Close-up of the rectifier PCB showing isolated gate driver ICs" loading="lazy"></button><figcaption>Isolated gate drivers on the power stage</figcaption></figure>
+          <figure><button data-full="img/rect-setup1.jpg"><img src="img/rect-setup1.jpg" alt="Rectifier board connected to a resistive load bank" loading="lazy"></button><figcaption>Testing into a resistive load</figcaption></figure>
+          <figure><button data-full="img/rect-setup2.jpg"><img src="img/rect-setup2.jpg" alt="Rectifier test setup with probes attached" loading="lazy"></button><figcaption>Probed test setup</figcaption></figure>
+        </div>
+      </article>
+
+      <!-- Project: DC-DC -->
+      <article class="project">
+        <div class="p-head">
+          <h3>600 W DC-DC Converter</h3>
+          <span class="p-meta">Independent project · Sept – Nov 2025</span>
+        </div>
+        <div class="tags"><span class="tag">Power sequencing</span><span class="tag">Thermal validation</span><span class="tag">PCB design</span></div>
+        <div class="p-body">
+          <div class="prose">
+            <p>A 600 W, 143 V-to-12 V converter built around the Cincon CFB600W module, designed as one half of the redundant pair used on the test bench above.</p>
+            <div>
+              <h4>Power sequencing and fault prevention</h4>
+              <p>Dedicated sequencing logic lets the converter enable only after auxiliary power is confirmed present. This stops it from starting into an undefined or partially powered state, removing a class of startup faults that appear when control and gate-drive rails aren't yet stable.</p>
+            </div>
+            <div>
+              <h4>Key decisions</h4>
+              <ul>
+                <li>Treated startup sequencing as a design requirement instead of assuming auxiliary power would always arrive first, a failure mode that tends to surface as an intermittent fault.</li>
+                <li>Validated with a 30-minute continuous run at 25 A instead of a brief functional check, to build confidence in real thermal performance.</li>
+              </ul>
+            </div>
+          </div>
+          <aside class="spec">
+            <span class="label">Specification</span>
+            <dl>
+              <div><dt>Power</dt><dd>600 W</dd></div>
+              <div><dt>Input</dt><dd>143 V</dd></div>
+              <div><dt>Output</dt><dd>12 V</dd></div>
+              <div><dt>Module</dt><dd>Cincon CFB600W</dd></div>
+              <div><dt>Validated at</dt><dd>25 A for 30 min</dd></div>
+              <div><dt>Enable</dt><dd>Gated on aux power</dd></div>
+            </dl>
+          </aside>
+        </div>
+        <div class="gallery" style="--n:4">
+          <figure><button data-full="img/dcdc-board.jpg"><img src="img/dcdc-board.jpg" alt="600 W converter board with large heatsink" loading="lazy"></button><figcaption>Converter board and heatsink</figcaption></figure>
+          <figure><button data-full="img/dcdc-bench.jpg"><img src="img/dcdc-bench.jpg" alt="Converter on the bench with power supply and multimeter" loading="lazy"></button><figcaption>Sustained load test on the bench</figcaption></figure>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="experience">
+    <div class="wrap">
+      <div class="sec-head"><h2>Experience</h2></div>
+      <div class="roles">
+        <article class="role">
+          <div class="when">Sept 2025 – Sept 2026<br>Calgary, AB</div>
+          <div>
+            <h3>Electrical Engineering Intern</h3>
+            <p class="org">SKF Magnetic Bearings Ltd.</p>
+            <ul>
+              <li>Evaluated Hall-effect and shunt-based current sensing approaches for a product application.</li>
+              <li>Designed analog signal conditioning, including a 2nd-order active filter and a configurable differential-to-single-ended gain stage; analyzed gain and phase against switching frequency and control-loop bandwidth.</li>
+              <li>Found the root cause of complementary H-bridge PWM overlap at startup in C2000 firmware, then developed and validated a fix under power.</li>
+              <li>Modeled inductive kickback with energy and charge conservation to size bus capacitance, justified a new inductance measurement method, and validated the model within 20% of measured response.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="role">
+          <div class="when">May 2025 – Sept 2025<br>Calgary, AB</div>
+          <div>
+            <h3>Power Electronics Research Intern</h3>
+            <p class="org">University of Calgary</p>
+            <ul>
+              <li>Designed the PCB for a 400 V active full-bridge rectifier with compliant creepage/clearance and galvanic isolation; validated at 250 V<sub>RMS</sub> and 4.5 A<sub>RMS</sub>.</li>
+              <li>Specified hardware and built test fixture wiring, including crimped connections and integration of a 6 kW supply.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <div class="wrap">
+      <div class="sec-head"><h2>Skills</h2></div>
+      <div class="skills">
+        <div><h3>Hardware</h3><ul><li>PCB design (Altium Designer)</li><li>Schematic design and review</li><li>High-voltage layout, isolation</li><li>Analog signal conditioning</li></ul></div>
+        <div><h3>Simulation and lab</h3><ul><li>LTspice</li><li>PLECS</li><li>Oscilloscope</li><li>Multimeter</li></ul></div>
+        <div><h3>Software</h3><ul><li>Embedded C (STM32, HAL, DMA)</li><li>TI C2000 firmware debugging</li><li>Python (CLI, GUI, data parsing)</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div>
+        <h2>Let's talk</h2>
+        <p>I'm interested in roles in power electronics, embedded systems and hardware design. The fastest way to reach me is email.</p>
+      </div>
+      <div class="c-rows">
+        <div class="c-row">
+          <div><span class="label">Email</span><div class="val" id="email">nabizadehm68@gmail.com</div></div>
+          <button type="button" id="copy">Copy</button>
+        </div>
+        <div class="c-row">
+          <div><span class="label">LinkedIn</span><div class="val"><a href="https://linkedin.com/in/matin-nabizadeh1/" target="_blank" rel="noopener">linkedin.com/in/matin-nabizadeh1</a></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">© 2026 Matin Nabizadeh · Calgary, Alberta</div></footer>
+
+<dialog id="lb" aria-label="Photo">
+  <button type="button" id="lb-close">Close</button>
+  <img id="lb-img" alt="">
+  <p id="lb-cap"></p>
+</dialog>
+
+<script>
+(() => {
+  const lb = document.getElementById('lb'), img = document.getElementById('lb-img'), cap = document.getElementById('lb-cap');
+  document.querySelectorAll('.gallery button').forEach(b => b.addEventListener('click', () => {
+    const t = b.querySelector('img');
+    img.src = b.dataset.full; img.alt = t.alt;
+    cap.textContent = b.parentElement.querySelector('figcaption')?.textContent || '';
+    if (lb.showModal) lb.showModal();
+  }));
+  document.getElementById('lb-close').addEventListener('click', () => lb.close());
+  lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
+
+  const copy = document.getElementById('copy');
+  copy.addEventListener('click', () => {
+    const text = document.getElementById('email').textContent;
+    const done = () => { copy.textContent = 'Copied'; setTimeout(() => copy.textContent = 'Copy', 1600); };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done).catch(sel); else sel();
+    function sel() { const r = document.createRange(); r.selectNodeContents(document.getElementById('email')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+  });
+})();
+</script>
+</body>
+</html>
