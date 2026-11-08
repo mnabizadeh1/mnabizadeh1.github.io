@@ -162,7 +162,7 @@ html { scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px)); }
 .steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; gap: 12px; }
 .steps li { counter-increment: s; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; font-size: 15px; }
 .steps li::before { content: counter(s); font: 500 12px var(--mono); width: 22px; height: 22px; border: 1px solid var(--copper); color: var(--copper); display: grid; place-items: center; border-radius: 50%; margin-top: 2px; }
-.fix { display: grid; gap: 14px; font-size: 15px; }
+.fix { display: grid; gap: 14px; font-size: 15px; align-content: start; }
 .swap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: 14px; }
 .swap s { color: var(--ink-2); }
 .swap b { color: var(--mask); font-weight: 500; }
@@ -320,12 +320,12 @@ dialog button { position: absolute; top: 8px; right: 8px; font: 500 13px var(--b
           <div class="debug-body">
             <div>
               <h5>Symptom</h5>
-              <p style="font-size:15px;margin-bottom:18px">ADC readings were stable at low signal levels but began oscillating as the signal approached about 2.5 V, then settled again once it dropped back. The behaviour was consistent and repeatable, which pointed to an circuit problem rather than random noise.</p>
+              <p style="font-size:15px;margin-bottom:18px">ADC readings were stable at low signal levels but began oscillating as the signal approached about 2.5 V, then settled again once it dropped back. The behaviour was consistent and repeatable, which pointed to a circuit problem rather than random noise.</p>
               <h5>Diagnosis</h5>
               <ol class="steps">
                 <li>Probed the gain stage and filter stage separately. The gain stage was stable over the full 0–3.3 V range, which isolated the problem to the filter.</li>
                 <li>Swept the ADC sampling rate. Oscillation started at the same voltage every time, ruling out sample-and-hold charge time.</li>
-                <li>Removed the filter op-amp and fed the sensor straight into the ADC. The oscillation disappeared, confirming that the filter op-amp was the prolem.               </li>
+                <li>Removed the filter op-amp and fed the sensor straight into the ADC. The oscillation disappeared, confirming that the filter op-amp was the prolem.</li>
               </ol>
             </div>
             <div class="fix">
@@ -333,7 +333,7 @@ dialog button { position: absolute; top: 8px; right: 8px; font: 500 13px var(--b
               <p>The original op-amp (ADA4891) was not stable because of a maximum input voltage limit of 2.5V, which was seen when the input voltage to the amplifier exceeded 2.5V. Swapping it for a rail-to-rail op-amp fixed the issue completely; readings stayed stable from 0 to 3.3 V.</p>
               <div class="swap"><s>ADA4891</s> <span aria-hidden="true">→</span> <b>TLV9054</b></div>
               <h5>Takeaway</h5>
-              <p>Check an op-amp's input voltage specifications, and ensure that the op-amp is rail-to-rail if the application demands it.                         </p>
+              <p>Check an op-amp's input voltage specifications, and ensure that the op-amp is rail-to-rail if the application demands it.</p>
             </div>
           </div>
         </section>
